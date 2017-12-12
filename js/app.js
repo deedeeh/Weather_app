@@ -2,12 +2,16 @@
 let output = document.getElementById("output");
 
 function getCurrentLocation(position) {
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+  const api =  "https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&lon=" + lon;
 
-  output.innerHTML = `Latitude = ${latitude} and Longitude = ${longitude}`;
-
+  $.getJSON(api, function(data) {
+    const weather = data.weather.main;
+    console.log(weather);
+  });
 }
+
 
 function errors(error) {
   switch(error.code) {
