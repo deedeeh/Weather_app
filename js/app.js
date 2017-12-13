@@ -1,5 +1,7 @@
 
-let output = document.getElementById("output");
+let locationEl = document.getElementById("location");
+let conditionEl = document.getElementById("condition");
+let tempEl = document.getElementById("temp");
 
 function getCurrentLocation(position) {
   const lat = position.coords.latitude;
@@ -10,8 +12,17 @@ function getCurrentLocation(position) {
   request.open('GET', url);
   request.responseType = 'json'
   request.onload = function() {
-    output.textContent = request.status;
-    console.log(request);
+    if(request.status === 200) {
+      const location = request.response.name;
+      const condition = request.response.weather[0].main;
+      const temp = request.response.main.temp;
+      function toFahrenheit(temp) {
+        return temp * 9/5 + 32;
+      }
+      locationEl.textContent = location;
+      conditionEl.textContent = condition;
+      tempEl.textContent = temp;
+    }
   }
   request.send();
 }
