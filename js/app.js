@@ -4,12 +4,16 @@ let output = document.getElementById("output");
 function getCurrentLocation(position) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
-  const api =  "https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&lon=" + lon;
+  const url = `https://fcc-weather-api.glitch.me/api/current?lat=${lat}&lon=${lon}`;
 
-  $.getJSON(api, function(data) {
-    const weather = data.weather.main;
-    console.log(weather);
-  });
+  const request = new XMLHttpRequest();
+  request.open('GET', url);
+  request.responseType = 'json'
+  request.onload = function() {
+    output.textContent = request.status;
+    console.log(request);
+  }
+  request.send();
 }
 
 
