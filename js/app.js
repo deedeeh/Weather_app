@@ -13,16 +13,24 @@ function getCurrentLocation(position) {
   request.responseType = 'json'
   request.onload = function() {
     if(request.status === 200) {
-      const location = request.response.name;
-      const condition = request.response.weather[0].main;
-      const temp = request.response.main.temp;
-      function toFahrenheit(temp) {
-        return temp * 9/5 + 32;
-      }
-      locationEl.textContent = location;
+      const accessData = this.response;
+      const location = accessData.name;
+      const country = accessData.sys.country;
+      const condition = accessData.weather[0].main;
+      const temp = accessData.main.temp;
+
+      locationEl.innerHTML = location + ", " + country;
       conditionEl.textContent = condition;
-      tempEl.textContent = temp;
+      tempEl.innerHTML = Math.round(temp) + " &#176" + "C";
     }
+    // tempEl.addEventListener("click", function() {
+    //   if(temp.innerHTML === temp) {
+    //     const tempF = temp * 9/5 + 32;
+    //     tempEl.innerHTML = Math.round(tempF) + " &#176" + "F";
+    //   } else {
+    //     return temp;
+    //   }
+    // });
   }
   request.send();
 }
