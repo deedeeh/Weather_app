@@ -1,8 +1,14 @@
+let accessData;
+let tempIsDegrees = false;
 
+//Cache DOM elements
+let errorEl = document.getElementById("error");
 let locationEl = document.getElementById("location");
 let conditionEl = document.getElementById("condition");
 let tempEl = document.getElementById("temp");
 
+//Function to request position; latitude and longitude and get API url with XMLHTTPRequest
+//This function when it is success
 function getCurrentLocation(position) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
@@ -11,43 +17,54 @@ function getCurrentLocation(position) {
   const request = new XMLHttpRequest();
   request.open('GET', url);
   request.responseType = 'json'
+  //onload of the request, data are retrieved from JSON API
   request.onload = function() {
     if(request.status === 200) {
-      const accessData = this.response;
+      accessData = this.response;
       const location = accessData.name;
       const country = accessData.sys.country;
       const condition = accessData.weather[0].main;
-      const temp = accessData.main.temp;
+      const tempC = accessData.main.temp;
 
+      //link data to the DOM
       locationEl.innerHTML = location + ", " + country;
       conditionEl.textContent = condition;
-      tempEl.innerHTML = Math.round(temp) + " &#176" + "C";
+      tempEl.innerHTML = Math.round(tempC) + " &#176" + "C";
+
+      //addEventListener to tempEl to toggle between Celsius and Fahrenheit
+      tempEl.addEventListener("click", function() {
+        tempEl.innerHTML = toggleTemp();
+      });
+
+      //Function to toggle between Celsius and Fahrenheit and is called inside a callback function
+      function toggleTemp() {
+        tempIsDegrees = !tempIsDegrees;
+        if(tempIsDegrees) {
+          return Math.round(tempC) + " &#176" + "C";
+        } else {
+          return Math.round(tempC) * 9/5 + 32 + " &#176" + "F";
+        }
+      }
+
     }
-    // tempEl.addEventListener("click", function() {
-    //   if(temp.innerHTML === temp) {
-    //     const tempF = temp * 9/5 + 32;
-    //     tempEl.innerHTML = Math.round(tempF) + " &#176" + "F";
-    //   } else {
-    //     return temp;
-    //   }
-    // });
   }
   request.send();
 }
 
-
+//this function is case of errors
 function errors(error) {
   switch(error.code) {
     case error.PERMISSION_DENIED:
-      output.innerHTML = "User denied the request for location."
+      errorEl.innerHTML = "User denied the request for location."
       break;
     case error.POSITION_UNAVAILABLE:
-      output.innerHTML = "Location information is unavailable."
+      errorEl.innerHTML = "Location information is unavailable."
       break;
     case error.TIMEOUT:
-      output.innerHTML = "The request to get user location timed out."
+      errorEl.innerHTML = "The request to get user location timed out."
       break;
   }
 }
 
+//get user geolocation and have 1st argument when it is success and 2nd argument in case of errors.
 navigator.geolocation.getCurrentPosition(getCurrentLocation, errors);

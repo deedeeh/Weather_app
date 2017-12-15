@@ -12,3 +12,7 @@ body {
 .container {
   text-align: center;
 }
+
+.temp {
+  cursor: pointer;
+}
