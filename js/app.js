@@ -1,5 +1,6 @@
 let accessData;
 let tempIsDegrees = false;
+let icons;
 
 //Cache DOM elements
 let errorEl = document.getElementById("error");
@@ -23,12 +24,12 @@ function getCurrentLocation(position) {
       accessData = this.response;
       const location = accessData.name;
       const country = accessData.sys.country;
-      const condition = accessData.weather[0].main;
+      const condition = accessData.weather[0].description;
       const tempC = accessData.main.temp;
 
       //link data to the DOM
       locationEl.innerHTML = location + ", " + country;
-      conditionEl.textContent = condition;
+      conditionEl.textContent = condition.toUpperCase();
       tempEl.innerHTML = Math.round(tempC) + " &#176" + "C";
 
       //addEventListener to tempEl to toggle between Celsius and Fahrenheit
@@ -46,6 +47,17 @@ function getCurrentLocation(position) {
         }
       }
 
+      icons = new Skycons({
+        "color": "#000";
+        "resizeClear": true;  //this is for Android hack
+      }),
+      switch(condition) {
+      case condition === mist:
+        icons.add("conditionIcon", Skycons.FOG)
+        break;
+
+      }
+      icons.play();
     }
   }
   request.send();
