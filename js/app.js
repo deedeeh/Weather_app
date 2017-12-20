@@ -2,6 +2,7 @@ let accessData;
 let tempIsDegrees = false;
 let icons;
 
+
 //Cache DOM elements
 let errorEl = document.getElementById("error");
 let locationEl = document.getElementById("location");
@@ -24,12 +25,13 @@ function getCurrentLocation(position) {
       accessData = this.response;
       const location = accessData.name;
       const country = accessData.sys.country;
-      const condition = accessData.weather[0].description;
+      const condition = accessData.weather[0].main;
       const tempC = accessData.main.temp;
 
+      console.log(accessData);
       //link data to the DOM
       locationEl.innerHTML = location + ", " + country;
-      conditionEl.textContent = condition.toUpperCase();
+      conditionEl.textContent = condition;
       tempEl.innerHTML = Math.round(tempC) + " &#176" + "C";
 
       //addEventListener to tempEl to toggle between Celsius and Fahrenheit
@@ -48,14 +50,39 @@ function getCurrentLocation(position) {
       }
 
       icons = new Skycons({
-        "color": "#000";
-        "resizeClear": true;  //this is for Android hack
-      }),
-      switch(condition) {
-      case condition === mist:
-        icons.add("conditionIcon", Skycons.FOG)
-        break;
+        "color": "black",
+        "resizeClear": true  //this is for Android hack
+      });
 
+      switch(condition) {
+      case 'Clouds':
+        icons.set("icon", Skycons.CLOUDY);
+        break;
+      case 'Rain':
+        icons.set("icon", Skycons.RAIN);
+        break;
+      case 'Snow':
+        icons.set("icon", Skycons.SNOW);
+        break;
+      case 'Haze':
+      case 'Fog':
+      case 'Mist':
+        icons.set("icon", Skycons.FOG);
+        break;
+      case 'Partly clouds':
+        icons.set("icon", Skycons.PARTLY_CLOUDY);
+        break;
+      case 'Sunny':
+        icons.set("icon", Skycons.CLEAR_DAY);
+      case 'Clear':
+        icons.set("icon", Skycons.CLEAR_NIGHT);
+        break;
+      case 'Wind':
+        icons.set("icon", Skycons.WIND);
+        break;
+      case 'Sleet':
+        icons.set("icon", Skycons.SLEET);
+        break;
       }
       icons.play();
     }
