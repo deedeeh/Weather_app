@@ -28,7 +28,6 @@ function getCurrentLocation(position) {
       const condition = accessData.weather[0].main;
       const tempC = accessData.main.temp;
 
-      console.log(accessData);
       //link data to the DOM
       locationEl.innerHTML = location + ", " + country;
       conditionEl.textContent = condition;

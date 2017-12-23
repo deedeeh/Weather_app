@@ -10,9 +10,33 @@ body {
 }
 
 .container {
+  padding: 1em;
   text-align: center;
+}
+
+.heading {
+  font-size: 2.827em;
+  font-family: 'Acme', Verdana , sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
+
 }
 
 .temp {
   cursor: pointer;
+}
+
+.loader {
+  margin: 50px auto;
+  border: 12px solid #bbb;
+  border-top: 12px solid hotpink;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg);}
 }
