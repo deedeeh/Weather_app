@@ -6,20 +6,21 @@
     <title>Weather App</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
   </head>
   <body>
     <div class="container">
       <header class="header">
         <h1 class="heading">Weather app</h1>
-        <h3 class="sub-heading">Check the weather wherever you are.</h3>
+        <h3 class="subheading">Check the weather wherever you are.</h3>
       </header>
       <div id="loader" class="loader"></div>
-      <main>
+      <main class="content">
         <div id="error" class="error"></div>
         <div id="location" class="location"></div>
         <div id="condition" class="condition"></div>
         <div id="temp" class="temp"></div>
-        <canvas id="icon" width="65" height="65"></canvas>
+        <canvas id="icon" class="icon" width="80" height="80"></canvas>
       </main>
     </div>
     <script src="https://darkskyapp.github.io/skycons/skycons.js"></script>
