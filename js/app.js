@@ -1,5 +1,5 @@
 let accessData;
-let tempIsDegrees = false;
+let tempIsDegrees = true;
 let icons;
 
 
@@ -8,6 +8,7 @@ let errorEl = document.getElementById("error");
 let locationEl = document.getElementById("location");
 let conditionEl = document.getElementById("condition");
 let tempEl = document.getElementById("temp");
+let loaderEl = document.getElementById("loader");
 
 //Function to request position; latitude and longitude and get API url with XMLHTTPRequest
 //This function when it is success
@@ -28,25 +29,24 @@ function getCurrentLocation(position) {
       const condition = accessData.weather[0].main;
       const tempC = accessData.main.temp;
 
+      loaderEl.classList.remove("loader");
+
       //link data to the DOM
       locationEl.innerHTML = location + ", " + country;
       conditionEl.textContent = condition;
       tempEl.innerHTML = Math.round(tempC) + " &#176" + "C";
 
       //addEventListener to tempEl to toggle between Celsius and Fahrenheit
-      tempEl.addEventListener("click", function() {
-        tempEl.innerHTML = toggleTemp();
-      });
-
       //Function to toggle between Celsius and Fahrenheit and is called inside a callback function
-      function toggleTemp() {
-        tempIsDegrees = !tempIsDegrees;
-        if(tempIsDegrees) {
-          return Math.round(tempC) + " &#176" + "C";
-        } else {
-          return Math.round(tempC) * 9/5 + 32 + " &#176" + "F";
-        }
-      }
+
+      tempEl.addEventListener("click", function toggleTemp() {
+          tempIsDegrees = !tempIsDegrees;
+          if(tempIsDegrees) {
+            tempEl.innerHTML = Math.round(tempC) + " &#176" + "C";
+          } else {
+            tempEl.innerHTML = Math.round(tempC) * 9/5 + 32 + " &#176" + "F";
+          }
+        });
 
       icons = new Skycons({
         "color": "black",
@@ -82,6 +82,8 @@ function getCurrentLocation(position) {
       case 'Sleet':
         icons.set("icon", Skycons.SLEET);
         break;
+      default:
+        console.log(condition);
       }
       icons.play();
     }
